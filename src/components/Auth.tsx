@@ -37,7 +37,7 @@ const Auth = ({
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="flex flex-col justify-start text-left">
-        <h1 className="text-2xl font-bold pb-3">Spain 2024 Cost Calculator</h1>
+        <h1 className="text-2xl font-bold pb-3">Japan Trip 2025</h1>
         <Button
           variant="outline"
           onClick={handleGoogleSignIn}
@@ -51,11 +51,8 @@ const Auth = ({
           )}
           Sign in with Google
         </Button>
-        <p className="text-[9px] pt-1 text-gray-500">
+        <p className="text-[9px] pt-1 text-gray-500 pt-3">
           Use your Google account to sign in
-        </p>
-        <p className="text-[9px] pt-1 text-gray-500">
-          redirect url: {getRedirectURL()}
         </p>
       </div>
     </div>

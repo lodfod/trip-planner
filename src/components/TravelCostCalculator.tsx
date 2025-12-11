@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
@@ -17,22 +17,49 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Paperclip, Loader2, EuroIcon, DollarSign } from "lucide-react";
+import { Paperclip, Loader2, DollarSign, RefreshCw, Clock, ChevronDown, ChevronUp, Plus } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 import { useToast } from "../hooks/use-toast";
-import { GroupMember } from "../lib/types";
 import supabase from "../lib/createClient";
 import { Session } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import {
+  getJPYtoUSDRate,
+  convertToUSD,
+  ExchangeRateResult,
+} from "../lib/exchangeRate";
 
-import { ExpenseItem } from "../lib/types";
-// import { ReceiptReader } from "./ReceiptReader";
+import { ExpenseItem, Currency, GroupMember } from "../lib/types";
+import { ReceiptOCR } from "./ReceiptOCR";
+import { InviteMember } from "./Settings/InviteMember";
+
+// Yen icon component since lucide doesn't have one
+const YenIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 2v20" />
+    <path d="M17 8H7" />
+    <path d="M17 12H7" />
+    <path d="M6 20l6-8 6 8" />
+  </svg>
+);
 
 interface TravelCostCalculatorProps {
   groupMembers: GroupMember[];
   locations: string[];
   categories: string[];
   session: Session;
+  onExpenseAdded?: () => void;
+  onMemberInvited?: () => void;
 }
 
 export default function TravelCostCalculator({
@@ -40,6 +67,8 @@ export default function TravelCostCalculator({
   locations,
   categories,
   session,
+  onExpenseAdded,
+  onMemberInvited,
 }: TravelCostCalculatorProps) {
   const [itemName, setItemName] = useState("");
   const [itemCost, setItemCost] = useState("");
@@ -59,11 +88,40 @@ export default function TravelCostCalculator({
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "uploading" | "saving" | "success" | "error"
   >("idle");
+  const [activeTab, setActiveTab] = useState("manual-input");
 
   const { toast } = useToast();
 
-  const [currency, setCurrency] = useState<"EUR" | "USD">("EUR");
-  const DOLLAR_TO_EURO_RATE = 0.95;
+  // Currency state - changed default to JPY for Japan trip
+  const [currency, setCurrency] = useState<Currency>("JPY");
+
+  // Exchange rate state
+  const [exchangeRate, setExchangeRate] = useState<ExchangeRateResult | null>(
+    null
+  );
+  const [isLoadingRate, setIsLoadingRate] = useState(true);
+
+  // Fetch exchange rate on mount
+  useEffect(() => {
+    fetchExchangeRate();
+  }, []);
+
+  const fetchExchangeRate = async () => {
+    setIsLoadingRate(true);
+    try {
+      const rate = await getJPYtoUSDRate();
+      setExchangeRate(rate);
+    } catch (error) {
+      console.error("Failed to fetch exchange rate:", error);
+      toast({
+        title: "Exchange rate warning",
+        description: "Using fallback exchange rate. Rates may not be current.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingRate(false);
+    }
+  };
 
   const calculateSplitAmounts = (
     totalAmount: number,
@@ -82,7 +140,7 @@ export default function TravelCostCalculator({
       amounts[i]++;
     }
 
-    // Convert back to dollars/euros with 2 decimal places
+    // Convert back to dollars/yen with 2 decimal places
     return amounts.map((cents) => Number((cents / 100).toFixed(2)));
   };
 
@@ -130,7 +188,7 @@ export default function TravelCostCalculator({
         // 20MB limit
         toast({
           title: "File too large",
-          description: "Please select a file smaller than 5MB.",
+          description: "Please select a file smaller than 20MB.",
           variant: "destructive",
         });
         return;
@@ -154,8 +212,9 @@ export default function TravelCostCalculator({
       const cost = parseFloat(itemCost);
       if (isNaN(cost) || cost <= 0) {
         newErrors.itemCost = "Cost must be a positive number";
-      } else if (cost > 1000000) {
-        newErrors.itemCost = "Cost must be less than or equal to 1,000,000";
+      } else if (cost > 10000000) {
+        // Increased for JPY (100,000 USD equivalent)
+        newErrors.itemCost = "Cost must be less than or equal to 10,000,000";
       }
     }
 
@@ -216,12 +275,6 @@ export default function TravelCostCalculator({
     }
   };
 
-  const convertToEuros = (amount: number): number => {
-    return currency === "USD"
-      ? Number((amount * DOLLAR_TO_EURO_RATE).toFixed(2))
-      : amount;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -239,51 +292,76 @@ export default function TravelCostCalculator({
 
       setSubmitStatus("saving");
 
-      // Convert amount to euros before saving
-      const costInEuros = Number(convertToEuros(Number(itemCost)).toFixed(2));
+      // Convert amount to USD (base currency) before saving
+      const originalAmount = parseFloat(itemCost);
+      const { amountUSD, rateUsed } = await convertToUSD(
+        originalAmount,
+        currency
+      );
 
-      // First, insert the expense
-      const expenseItem: ExpenseItem = {
+      // First, insert the expense (payers are stored in payer_amounts table, not here)
+      const expenseInsert = {
         name: itemName,
-        cost: costInEuros, // Save in euros
+        cost: amountUSD, // Save in USD (base currency)
         location,
         category,
-        payers: Object.entries(payers)
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          .filter(([_, value]) => value.selected)
-          .map(([key]) => key),
         creator: session?.user.id,
         receipt_url: receiptUrl || undefined,
-        original_currency: currency, // Add this to your ExpenseItem type
-        original_amount: parseFloat(itemCost), // Add this to your ExpenseItem type
+        original_currency: currency,
+        original_amount: originalAmount,
+        exchange_rate_used: rateUsed,
       };
 
+      console.log("Inserting expense:", expenseInsert);
       const { data: expenseData, error: expenseError } = await supabase
         .from("expenses")
-        .insert(expenseItem)
+        .insert(expenseInsert)
         .select()
         .single();
 
-      if (expenseError) throw expenseError;
+      if (expenseError) {
+        console.error("Expense insert error:", expenseError);
+        throw expenseError;
+      }
 
-      // Then, insert the payer amounts
-      const payerAmounts = Object.entries(payers)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .filter(([_, value]) => value.selected)
-        .map(([userId, value]) => ({
-          expense_id: expenseData.id,
-          user_id: userId,
-          amount:
-            value.amount ||
-            parseFloat(itemCost) /
-              Object.values(payers).filter((p) => p.selected).length,
-        }));
+      // Then, insert the payer amounts (also convert to USD)
+      const payerAmounts = await Promise.all(
+        Object.entries(payers)
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          .filter(([_, value]) => value.selected)
+          .map(async ([memberId, value]) => {
+            const originalPayerAmount =
+              value.amount ||
+              parseFloat(itemCost) /
+                Object.values(payers).filter((p) => p.selected).length;
+            const { amountUSD: payerAmountUSD } = await convertToUSD(
+              originalPayerAmount,
+              currency
+            );
 
+            // Check if this is a pending member
+            const member = groupMembers.find((m) => m.id === memberId);
+            const isPending = member?.isPending ?? false;
+
+            return {
+              expense_id: expenseData.id,
+              user_id: isPending ? null : memberId,
+              pending_member_id: isPending ? memberId : null,
+              amount: payerAmountUSD,
+              original_amount: originalPayerAmount,
+            };
+          })
+      );
+
+      console.log("Inserting payer amounts:", payerAmounts);
       const { error: amountsError } = await supabase
         .from("payer_amounts")
         .insert(payerAmounts);
 
-      if (amountsError) throw amountsError;
+      if (amountsError) {
+        console.error("Payer amounts insert error:", amountsError);
+        throw amountsError;
+      }
 
       setSubmitStatus("success");
       toast({
@@ -307,6 +385,9 @@ export default function TravelCostCalculator({
         fileInputRef.current.value = "";
       }
       setSubmitStatus("idle");
+
+      // Notify parent that expense was added
+      onExpenseAdded?.();
     } catch (error) {
       setSubmitStatus("error");
       toast({
@@ -318,101 +399,148 @@ export default function TravelCostCalculator({
     }
   };
 
+  // Calculate USD equivalent for display
+  const getUSDEquivalent = (): string => {
+    if (!exchangeRate || currency === "USD") return "";
+    const amount = parseFloat(itemCost || "0");
+    const usdAmount = amount / exchangeRate.rate;
+    return `$${usdAmount.toFixed(2)}`;
+  };
+
+  // Calculate JPY equivalent for display
+  const getJPYEquivalent = (): string => {
+    if (!exchangeRate || currency === "JPY") return "";
+    const amount = parseFloat(itemCost || "0");
+    const jpyAmount = Math.round(amount * exchangeRate.rate);
+    return `¥${jpyAmount.toLocaleString()}`;
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader className="flex flex-col items-start">
-        <CardTitle>Add New Expense</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="manual-input" className="w-full">
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Card className="w-full max-w-2xl mx-auto">
+        <CollapsibleTrigger asChild>
+          <CardHeader className="flex flex-row items-center justify-between cursor-pointer hover:bg-muted/50 transition-colors">
+            <div className="flex flex-col items-start">
+              <CardTitle className="flex items-center gap-2">
+                <Plus className="h-5 w-5" />
+                Add New Expense
+              </CardTitle>
+              {/* Exchange rate indicator */}
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2">
+                {isLoadingRate ? (
+                  <span className="flex items-center gap-1">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Loading exchange rate...
+                  </span>
+                ) : exchangeRate ? (
+                  <span>
+                    1 USD = ¥{exchangeRate.rate.toFixed(2)}
+                    {exchangeRate.isStale && " (cached)"}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              {isOpen ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </Button>
+          </CardHeader>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <CardContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="manual-input">Cost Input</TabsTrigger>
-            {/* <TabsTrigger value="receipt-reader">Receipt Reader</TabsTrigger> */}
+            <TabsTrigger value="receipt-reader">Receipt Scanner</TabsTrigger>
           </TabsList>
 
           <TabsContent value="manual-input">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <div className="flex gap-4">
-                <div className="flex-1 flex flex-col gap-2 items-start">
-                  <Label htmlFor="itemName" className="self-start">
-                    Item Name
-                  </Label>
-                  <Input
-                    id="itemName"
-                    value={itemName}
-                    onChange={(e) => setItemName(e.target.value)}
-                    required
-                    aria-invalid={!!errors.itemName}
-                    aria-describedby={
-                      errors.itemName ? "itemName-error" : undefined
-                    }
-                  />
-                  {errors.itemName && (
-                    <p id="itemName-error" className="text-sm text-red-500">
-                      {errors.itemName}
-                    </p>
-                  )}
-                </div>
-                <div className="flex-1 flex flex-col gap-2 items-start">
-                  <Label htmlFor="itemCost" className="self-start">
-                    Cost
-                  </Label>
-                  <div className="flex w-full gap-2">
-                    <div className="relative flex-1">
-                      <Input
-                        id="itemCost"
-                        type="number"
-                        value={itemCost}
-                        onChange={(e) => setItemCost(e.target.value)}
-                        required
-                        min="0"
-                        step="0.01"
-                        aria-invalid={!!errors.itemCost}
-                        aria-describedby={
-                          errors.itemCost ? "itemCost-error" : undefined
-                        }
-                      />
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        {currency === "EUR" ? (
-                          <EuroIcon className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        )}
-                      </div>
-                    </div>
-                    <Select
-                      value={currency}
-                      onValueChange={(value: "EUR" | "USD") =>
-                        setCurrency(value)
-                      }
-                    >
-                      <SelectTrigger className="w-[100px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="EUR">EUR</SelectItem>
-                        <SelectItem value="USD">USD</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  {currency === "USD" && (
-                    <p className="text-xs text-muted-foreground">
-                      ≈ €
-                      {convertToEuros(parseFloat(itemCost || "0")).toFixed(2)}
-                    </p>
-                  )}
-                  {errors.itemCost && (
-                    <p id="itemCost-error" className="text-sm text-red-500">
-                      {errors.itemCost}
-                    </p>
-                  )}
-                </div>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-4">
+              {/* Item Name - full width */}
+              <div className="flex flex-col gap-2 text-left">
+                <Label htmlFor="itemName" className="text-left">Item Name</Label>
+                <Input
+                  id="itemName"
+                  value={itemName}
+                  onChange={(e) => setItemName(e.target.value)}
+                  required
+                  placeholder="e.g. Dinner at Ichiran"
+                  aria-invalid={!!errors.itemName}
+                  aria-describedby={
+                    errors.itemName ? "itemName-error" : undefined
+                  }
+                />
+                {errors.itemName && (
+                  <p id="itemName-error" className="text-sm text-red-500">
+                    {errors.itemName}
+                  </p>
+                )}
               </div>
-              <div className="flex gap-4">
-                <div className="flex-1 flex flex-col gap-2 items-start">
-                  <Label htmlFor="location" className="self-start">
-                    Location
-                  </Label>
+
+              {/* Cost - full width with better proportions */}
+              <div className="flex flex-col gap-2 text-left">
+                <Label htmlFor="itemCost" className="text-left">Cost</Label>
+                <div className="flex w-full gap-2">
+                  <div className="relative flex-1 min-w-0">
+                    <Input
+                      id="itemCost"
+                      type="number"
+                      value={itemCost}
+                      onChange={(e) => setItemCost(e.target.value)}
+                      required
+                      min="0"
+                      step={currency === "JPY" ? "1" : "0.01"}
+                      placeholder={currency === "JPY" ? "1000" : "10.00"}
+                      className="pr-8"
+                      aria-invalid={!!errors.itemCost}
+                      aria-describedby={
+                        errors.itemCost ? "itemCost-error" : undefined
+                      }
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      {currency === "JPY" ? (
+                        <YenIcon className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
+                  <Select
+                    value={currency}
+                    onValueChange={(value: Currency) => setCurrency(value)}
+                  >
+                    <SelectTrigger className="w-[72px] flex-shrink-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="JPY">JPY</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                {itemCost && exchangeRate && (
+                  <p className="text-xs text-muted-foreground">
+                    {currency === "JPY"
+                      ? `≈ ${getUSDEquivalent()}`
+                      : `≈ ${getJPYEquivalent()}`}
+                  </p>
+                )}
+                {errors.itemCost && (
+                  <p id="itemCost-error" className="text-sm text-red-500">
+                    {errors.itemCost}
+                  </p>
+                )}
+              </div>
+
+              {/* Location & Category - stack on mobile, side by side on larger */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="location" className="text-left">Location</Label>
                   <Select value={location} onValueChange={setLocation} required>
                     <SelectTrigger
                       id="location"
@@ -437,10 +565,8 @@ export default function TravelCostCalculator({
                     </p>
                   )}
                 </div>
-                <div className="flex-1 flex flex-col gap-2 items-start">
-                  <Label htmlFor="category" className="self-start">
-                    Category
-                  </Label>
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="category" className="text-left">Category</Label>
                   <Select value={category} onValueChange={setCategory} required>
                     <SelectTrigger
                       id="category"
@@ -466,10 +592,20 @@ export default function TravelCostCalculator({
                   )}
                 </div>
               </div>
-              <div className="flex flex-col gap-2 items-start">
-                <Label className="self-start">Who should be charged?</Label>
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex items-center gap-2">
+              {/* Who should be charged */}
+              <div className="flex flex-col gap-2 text-left">
+                <div className="flex items-center justify-between">
+                  <Label className="text-left">Split between</Label>
+                  {onMemberInvited && (
+                    <InviteMember
+                      currentUserId={session.user.id}
+                      onMemberInvited={onMemberInvited}
+                    />
+                  )}
+                </div>
+                <div className="flex flex-col gap-0">
+                  {/* Split Equally option */}
+                  <div className="flex items-center gap-3 py-2 px-1">
                     <Checkbox
                       id="selectAll"
                       checked={
@@ -479,10 +615,13 @@ export default function TravelCostCalculator({
                       onCheckedChange={handleSelectAll}
                       aria-label="Select all payers"
                     />
-                    <Label htmlFor="selectAll">Split Equally</Label>
+                    <Label htmlFor="selectAll" className="flex-1 cursor-pointer font-medium text-sm">
+                      Split Equally
+                    </Label>
                   </div>
+                  {/* Individual members */}
                   {groupMembers.map((member) => (
-                    <div key={member.id} className="flex items-center gap-2">
+                    <div key={member.id} className="flex items-center gap-3 py-2 px-1">
                       <Checkbox
                         id={member.id}
                         checked={payers[member.id]?.selected}
@@ -526,7 +665,12 @@ export default function TravelCostCalculator({
                           })
                         }
                       />
-                      <Label htmlFor={member.id}>{member.full_name}</Label>
+                      <Label htmlFor={member.id} className="flex items-center gap-1.5 flex-1 cursor-pointer text-sm">
+                        {member.display_name || member.full_name}
+                        {member.isPending && (
+                          <Clock className="h-3.5 w-3.5 text-yellow-500" title="Invited but not signed up yet" />
+                        )}
+                      </Label>
                       {payers[member.id]?.selected && (
                         <Input
                           type="number"
@@ -534,10 +678,10 @@ export default function TravelCostCalculator({
                           onChange={(e) =>
                             handleAmountChange(member.id, e.target.value)
                           }
-                          className="w-24 h-8"
-                          placeholder="Amount"
+                          className="w-20 h-8 text-right"
+                          placeholder="0"
                           min="0"
-                          step="0.01"
+                          step={currency === "JPY" ? "1" : "0.01"}
                         />
                       )}
                     </div>
@@ -547,10 +691,10 @@ export default function TravelCostCalculator({
                   <p className="text-sm text-red-500">{errors.payers}</p>
                 )}
               </div>
-              <div className="flex flex-col gap-2 items-start">
-                <Label htmlFor="attachment" className="self-start">
-                  Attachment (Optional)
-                </Label>
+
+              {/* Attachment */}
+              <div className="flex flex-col gap-2 text-left">
+                <Label htmlFor="attachment" className="text-left">Attachment (Optional)</Label>
                 <div className="flex items-center gap-2">
                   <Input
                     id="attachment"
@@ -578,43 +722,67 @@ export default function TravelCostCalculator({
             </form>
           </TabsContent>
 
-          {/* <TabsContent value="receipt-reader">
-            <ReceiptReader
-              onExtractedData={(data) => {
-                // Handle extracted data
-                if (data.itemName) setItemName(data.itemName);
-                if (data.cost) setItemCost(data.cost.toString());
-                if (data.location) setLocation(data.location);
-                // ... handle other fields
+          <TabsContent value="receipt-reader">
+            <ReceiptOCR
+              groupMembers={groupMembers}
+              onExpenseData={async (data) => {
+                // Auto-fill the form with OCR data
+                setItemName(data.name);
+                setItemCost(data.total.toString());
+                setCurrency(data.currency);
+
+                // Set up payers from the OCR assignment
+                const newPayers: Record<
+                  string,
+                  { selected: boolean; amount?: number }
+                > = {};
+                groupMembers.forEach((member) => {
+                  const amount = data.payerAmounts[member.id];
+                  newPayers[member.id] = {
+                    selected: amount !== undefined && amount > 0,
+                    amount: amount,
+                  };
+                });
+                setPayers(newPayers);
+
+                // Switch to manual input tab to review/submit
+                setActiveTab("manual-input");
+                toast({
+                  title: "Receipt processed",
+                  description:
+                    "Review the details and click Add Expense to save.",
+                });
               }}
             />
-          </TabsContent> */}
+          </TabsContent>
         </Tabs>
-      </CardContent>
-      <CardFooter>
-        <Button
-          type="submit"
-          className="w-full"
-          onClick={handleSubmit}
-          disabled={submitStatus !== "idle" && submitStatus !== "error"}
-        >
-          {submitStatus === "idle" && "Add Expense"}
-          {submitStatus === "uploading" && (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Uploading Receipt...
-            </>
-          )}
-          {submitStatus === "saving" && (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Saving Expense...
-            </>
-          )}
-          {submitStatus === "success" && "Success!"}
-          {submitStatus === "error" && "Error - Try Again"}
-        </Button>
-      </CardFooter>
-    </Card>
+          </CardContent>
+          <CardFooter>
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={handleSubmit}
+              disabled={submitStatus !== "idle" && submitStatus !== "error"}
+            >
+              {submitStatus === "idle" && "Add Expense"}
+              {submitStatus === "uploading" && (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Uploading Receipt...
+                </>
+              )}
+              {submitStatus === "saving" && (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving Expense...
+                </>
+              )}
+              {submitStatus === "success" && "Success!"}
+              {submitStatus === "error" && "Error - Try Again"}
+            </Button>
+          </CardFooter>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
   );
 }

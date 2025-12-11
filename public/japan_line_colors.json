@@ -1,0 +1,1356 @@
+{
+  "銀座線": {
+    "color": "#FF9500",
+    "en": "Ginza Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "1号線銀座線": {
+    "color": "#FF9500",
+    "en": "Ginza Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "3号線銀座線": {
+    "color": "#FF9500",
+    "en": "Ginza Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "3号線": {
+    "color": "#FF9500",
+    "en": "Ginza Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "日比谷線": {
+    "color": "#B5B5AC",
+    "en": "Hibiya Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "2号線日比谷線": {
+    "color": "#B5B5AC",
+    "en": "Hibiya Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "丸ノ内線": {
+    "color": "#F62E36",
+    "en": "Marunouchi Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "4号線丸ノ内線": {
+    "color": "#F62E36",
+    "en": "Marunouchi Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "4号線": {
+    "color": "#F62E36",
+    "en": "Marunouchi Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "4号線丸ノ内線分岐線": {
+    "color": "#F62E36",
+    "en": "Marunouchi Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "東西線": {
+    "color": "#009BBF",
+    "en": "Tozai Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "5号線東西線": {
+    "color": "#009BBF",
+    "en": "Tozai Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "千代田線": {
+    "color": "#00BB85",
+    "en": "Chiyoda Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "9号線千代田線": {
+    "color": "#00BB85",
+    "en": "Chiyoda Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "有楽町線": {
+    "color": "#C1A470",
+    "en": "Yūrakuchō Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "8号線有楽町線": {
+    "color": "#C1A470",
+    "en": "Yūrakuchō Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "半蔵門線": {
+    "color": "#8F76D6",
+    "en": "Hanzōmon Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "11号線半蔵門線": {
+    "color": "#8F76D6",
+    "en": "Hanzōmon Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "南北線": {
+    "color": "#00AC9B",
+    "en": "Namboku Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "7号線南北線": {
+    "color": "#00AC9B",
+    "en": "Namboku Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "副都心線": {
+    "color": "#9C5E31",
+    "en": "Fukutoshin Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "13号線副都心線": {
+    "color": "#9C5E31",
+    "en": "Fukutoshin Line",
+    "operator": "Tokyo Metro",
+    "source": "wikipedia"
+  },
+  "浅草線": {
+    "color": "#EC6E65",
+    "en": "Asakusa Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "1号線浅草線": {
+    "color": "#EC6E65",
+    "en": "Asakusa Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "三田線": {
+    "color": "#006CB6",
+    "en": "Mita Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "6号線三田線": {
+    "color": "#006CB6",
+    "en": "Mita Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "新宿線": {
+    "color": "#B0C124",
+    "en": "Shinjuku Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "10号線新宿線": {
+    "color": "#B0C124",
+    "en": "Shinjuku Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "大江戸線": {
+    "color": "#CE045B",
+    "en": "Ōedo Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "12号線大江戸線": {
+    "color": "#CE045B",
+    "en": "Ōedo Line",
+    "operator": "Toei",
+    "source": "wikipedia"
+  },
+  "山手線": {
+    "color": "#9ACD32",
+    "en": "Yamanote Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "中央線": {
+    "color": "#019A66",
+    "en": "Chūō Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "中央線快速": {
+    "color": "#FF4500",
+    "en": "Chūō Line (Rapid)",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "中央・総武線": {
+    "color": "#FFD700",
+    "en": "Chūō–Sōbu Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "総武線": {
+    "color": "#FFD700",
+    "en": "Chūō–Sōbu Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "総武本線": {
+    "color": "#FFD700",
+    "en": "Chūō–Sōbu Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "京浜東北線": {
+    "color": "#00BFFF",
+    "en": "Keihin-Tōhoku Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "横須賀線": {
+    "color": "#0070B9",
+    "en": "Yokosuka Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "埼京線": {
+    "color": "#2E8B57",
+    "en": "Saikyō Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "赤羽線（埼京線）": {
+    "color": "#2E8B57",
+    "en": "Saikyō Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "東北線（埼京線）": {
+    "color": "#2E8B57",
+    "en": "Saikyō Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "常磐線": {
+    "color": "#3CB371",
+    "en": "Jōban Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "常磐線快速": {
+    "color": "#3CB371",
+    "en": "Jōban Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "京葉線": {
+    "color": "#DC143C",
+    "en": "Keiyō Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "武蔵野線": {
+    "color": "#FF4500",
+    "en": "Musashino Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "南武線": {
+    "color": "#FFD700",
+    "en": "Nambu Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "横浜線": {
+    "color": "#9ACD32",
+    "en": "Yokohama Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "鶴見線": {
+    "color": "#FFD700",
+    "en": "Tsurumi Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "東海道線": {
+    "color": "#FFA500",
+    "en": "Tōkaidō Main Line",
+    "operator": "JR East",
+    "source": "wikipedia"
+  },
+  "東横線": {
+    "color": "#DA0442",
+    "en": "Toyoko Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "東急東横線": {
+    "color": "#DA0442",
+    "en": "Toyoko Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "田園都市線": {
+    "color": "#20A288",
+    "en": "Den-en-Toshi Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "東急田園都市線": {
+    "color": "#20A288",
+    "en": "Den-en-Toshi Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "目黒線": {
+    "color": "#009CD2",
+    "en": "Meguro Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "東急目黒線": {
+    "color": "#009CD2",
+    "en": "Meguro Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "大井町線": {
+    "color": "#F18C43",
+    "en": "Oimachi Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "東急大井町線": {
+    "color": "#F18C43",
+    "en": "Oimachi Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "池上線": {
+    "color": "#EE86A7",
+    "en": "Ikegami Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "東急池上線": {
+    "color": "#EE86A7",
+    "en": "Ikegami Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "多摩川線": {
+    "color": "#AE0378",
+    "en": "Tamagawa Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "東急多摩川線": {
+    "color": "#AE0378",
+    "en": "Tamagawa Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "世田谷線": {
+    "color": "#FCC70D",
+    "en": "Setagaya Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "こどもの国線": {
+    "color": "#0068B7",
+    "en": "Kodomonokuni Line",
+    "operator": "Tokyu",
+    "source": "wikipedia"
+  },
+  "小田急線": {
+    "color": "#2683CE",
+    "en": "Odawara Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "小田原線": {
+    "color": "#2683CE",
+    "en": "Odawara Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "小田急小田原線": {
+    "color": "#2683CE",
+    "en": "Odawara Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "江ノ島線": {
+    "color": "#2683CE",
+    "en": "Enoshima Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "小田急江ノ島線": {
+    "color": "#2683CE",
+    "en": "Enoshima Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "多摩線": {
+    "color": "#2683CE",
+    "en": "Tama Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "小田急多摩線": {
+    "color": "#2683CE",
+    "en": "Tama Line",
+    "operator": "Odakyu",
+    "source": "wikipedia"
+  },
+  "京王線": {
+    "color": "#E3379F",
+    "en": "Keiō Line",
+    "operator": "Keio",
+    "source": "wikipedia"
+  },
+  "井の頭線": {
+    "color": "#1A407B",
+    "en": "Inokashira Line",
+    "operator": "Keio",
+    "source": "wikipedia"
+  },
+  "京王井の頭線": {
+    "color": "#1A407B",
+    "en": "Inokashira Line",
+    "operator": "Keio",
+    "source": "wikipedia"
+  },
+  "相模原線": {
+    "color": "#E3379F",
+    "en": "Keiō Line",
+    "operator": "Keio",
+    "source": "wikipedia"
+  },
+  "動物園線": {
+    "color": "#E3379F",
+    "en": "Keiō Line",
+    "operator": "Keio",
+    "source": "wikipedia"
+  },
+  "競馬場線": {
+    "color": "#E3379F",
+    "en": "Keiō Line",
+    "operator": "Keio",
+    "source": "wikipedia"
+  },
+  "池袋線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "西武池袋線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "西武新宿線": {
+    "color": "#00A6BF",
+    "en": "Shinjuku Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "拝島線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "多摩湖線": {
+    "color": "#FAAA27",
+    "en": "Tamako Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "国分寺線": {
+    "color": "#34B559",
+    "en": "Kokubunji Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "西武園線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "西武有楽町線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "狭山線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "豊島線": {
+    "color": "#ED772D",
+    "en": "Ikebukuro Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "山口線": {
+    "color": "#EF473D",
+    "en": "Yamaguchi Line",
+    "operator": "Seibu",
+    "source": "wikipedia"
+  },
+  "東上本線": {
+    "color": "#004098",
+    "en": "Tōjō Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "東武東上線": {
+    "color": "#004098",
+    "en": "Tōjō Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "伊勢崎線": {
+    "color": "#DC143C",
+    "en": "Isesaki Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "東武伊勢崎線": {
+    "color": "#DC143C",
+    "en": "Isesaki Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "東武スカイツリーライン": {
+    "color": "#005AAA",
+    "en": "Skytree Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "亀戸線": {
+    "color": "#DC143C",
+    "en": "Isesaki Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "大師線": {
+    "color": "#DC143C",
+    "en": "Isesaki Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "野田線": {
+    "color": "#00BFFF",
+    "en": "Noda Line",
+    "operator": "Tobu",
+    "source": "wikipedia"
+  },
+  "本線": {
+    "color": "#005AAA",
+    "en": "Keisei Main Line",
+    "operator": "Keisei",
+    "source": "wikipedia"
+  },
+  "京成本線": {
+    "color": "#005AAA",
+    "en": "Keisei Main Line",
+    "operator": "Keisei",
+    "source": "wikipedia"
+  },
+  "押上線": {
+    "color": "#005AAA",
+    "en": "Keisei Main Line",
+    "operator": "Keisei",
+    "source": "wikipedia"
+  },
+  "京成押上線": {
+    "color": "#005AAA",
+    "en": "Keisei Main Line",
+    "operator": "Keisei",
+    "source": "wikipedia"
+  },
+  "金町線": {
+    "color": "#005AAA",
+    "en": "Keisei Main Line",
+    "operator": "Keisei",
+    "source": "wikipedia"
+  },
+  "成田空港線": {
+    "color": "#005AAA",
+    "en": "Keisei Main Line",
+    "operator": "Keisei",
+    "source": "wikipedia"
+  },
+  "空港線": {
+    "color": "#32CAE2",
+    "en": "Keikyu Line",
+    "operator": "Keikyu",
+    "source": "wikipedia"
+  },
+  "京急本線": {
+    "color": "#32CAE2",
+    "en": "Keikyu Line",
+    "operator": "Keikyu",
+    "source": "wikipedia"
+  },
+  "京急線": {
+    "color": "#32CAE2",
+    "en": "Keikyu Line",
+    "operator": "Keikyu",
+    "source": "wikipedia"
+  },
+  "りんかい線": {
+    "color": "#00BFFF",
+    "en": "Hokusō Line",
+    "operator": "Hokuso",
+    "source": "wikipedia"
+  },
+  "東京臨海新交通臨海線": {
+    "color": "#0065A6",
+    "en": "Yurikamome",
+    "operator": "Yurikamome",
+    "source": "wikipedia"
+  },
+  "ゆりかもめ": {
+    "color": "#0065A6",
+    "en": "Yurikamome",
+    "operator": "Yurikamome",
+    "source": "wikipedia"
+  },
+  "東京モノレール羽田線": {
+    "color": "#000080",
+    "en": "Tokyo Monorail",
+    "operator": "Tokyo Monorail",
+    "source": "wikipedia"
+  },
+  "東京モノレール": {
+    "color": "#000080",
+    "en": "Tokyo Monorail",
+    "operator": "Tokyo Monorail",
+    "source": "wikipedia"
+  },
+  "日暮里・舎人線": {
+    "color": "#FF69B4",
+    "en": "Shin-Keisei Line",
+    "operator": "Shin-Keisei",
+    "source": "wikipedia"
+  },
+  "日暮里・舎人ライナー": {
+    "color": "#FF69B4",
+    "en": "Shin-Keisei Line",
+    "operator": "Shin-Keisei",
+    "source": "wikipedia"
+  },
+  "埼玉高速鉄道線": {
+    "color": "#345CAA",
+    "en": "Saitama Rapid Railway",
+    "operator": "Saitama",
+    "source": "wikipedia"
+  },
+  "北総線": {
+    "color": "#00BFFF",
+    "en": "Hokusō Line",
+    "operator": "Hokuso",
+    "source": "wikipedia"
+  },
+  "東葉高速線": {
+    "color": "#0AAA3C",
+    "en": "Tōyō Rapid Railway",
+    "operator": "Toyo Rapid",
+    "source": "wikipedia"
+  },
+  "新京成線": {
+    "color": "#FF69B4",
+    "en": "Shin-Keisei Line",
+    "operator": "Shin-Keisei",
+    "source": "wikipedia"
+  },
+  "つくばエクスプレス": {
+    "color": "#000084",
+    "en": "Tsukuba Express",
+    "operator": "Tsukuba Express",
+    "source": "wikipedia"
+  },
+  "常磐新線": {
+    "color": "#000084",
+    "en": "Tsukuba Express",
+    "operator": "Tsukuba Express",
+    "source": "wikipedia"
+  },
+  "御堂筋線": {
+    "color": "#E5171F",
+    "en": "Midōsuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道御堂筋線": {
+    "color": "#E5171F",
+    "en": "Midōsuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "1号線(御堂筋線)": {
+    "color": "#E5171F",
+    "en": "Midōsuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "谷町線": {
+    "color": "#522886",
+    "en": "Tanimachi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道谷町線": {
+    "color": "#522886",
+    "en": "Tanimachi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "2号線(谷町線)": {
+    "color": "#522886",
+    "en": "Tanimachi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "四つ橋線": {
+    "color": "#0078BE",
+    "en": "Yotsubashi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道四つ橋線": {
+    "color": "#0078BE",
+    "en": "Yotsubashi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "3号線(四つ橋線)": {
+    "color": "#0078BE",
+    "en": "Yotsubashi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道中央線": {
+    "color": "#019A66",
+    "en": "Chūō Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "4号線(中央線)": {
+    "color": "#019A66",
+    "en": "Chūō Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "千日前線": {
+    "color": "#E44D93",
+    "en": "Sennichimae Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道千日前線": {
+    "color": "#E44D93",
+    "en": "Sennichimae Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "5号線(千日前線)": {
+    "color": "#E44D93",
+    "en": "Sennichimae Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "堺筋線": {
+    "color": "#814721",
+    "en": "Sakaisuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道堺筋線": {
+    "color": "#814721",
+    "en": "Sakaisuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "6号線(堺筋線)": {
+    "color": "#814721",
+    "en": "Sakaisuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "長堀鶴見緑地線": {
+    "color": "#A9CC51",
+    "en": "Nagahori Tsurumi-ryokuchi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道長堀鶴見緑地線": {
+    "color": "#A9CC51",
+    "en": "Nagahori Tsurumi-ryokuchi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "7号線(長堀鶴見緑地線)": {
+    "color": "#A9CC51",
+    "en": "Nagahori Tsurumi-ryokuchi Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "今里筋線": {
+    "color": "#EE7B1A",
+    "en": "Imazatosuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "大阪市高速電気軌道今里筋線": {
+    "color": "#EE7B1A",
+    "en": "Imazatosuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "8号線（今里筋線）": {
+    "color": "#EE7B1A",
+    "en": "Imazatosuji Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "南港ポートタウン線": {
+    "color": "#00A0DE",
+    "en": "Nankō Port Town Line",
+    "operator": "Osaka Metro",
+    "source": "wikipedia"
+  },
+  "阪急京都本線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急京都線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "京都線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急神戸本線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急神戸線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "神戸線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急宝塚本線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急宝塚線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "宝塚線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急千里線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "千里線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "阪急嵐山線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "嵐山線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "今津線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "伊丹線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "甲陽線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "箕面線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "神戸高速線": {
+    "color": "#34B580",
+    "en": "Hankyu Railway",
+    "operator": "Hankyu",
+    "source": "wikipedia"
+  },
+  "JR京都線": {
+    "color": "#0072bc",
+    "en": "JR京都線",
+    "source": "manual"
+  },
+  "JR神戸線": {
+    "color": "#0072bc",
+    "en": "JR神戸線",
+    "source": "manual"
+  },
+  "JR東西線": {
+    "color": "#ff69b4",
+    "en": "JR東西線",
+    "source": "manual"
+  },
+  "東海道本線": {
+    "color": "#0072bc",
+    "en": "東海道本線",
+    "source": "manual"
+  },
+  "大阪環状線": {
+    "color": "#e60012",
+    "en": "大阪環状線",
+    "source": "manual"
+  },
+  "阪和線": {
+    "color": "#f15a22",
+    "en": "阪和線",
+    "source": "manual"
+  },
+  "関西本線": {
+    "color": "#009944",
+    "en": "関西本線",
+    "source": "manual"
+  },
+  "関西線": {
+    "color": "#009944",
+    "en": "関西線",
+    "source": "manual"
+  },
+  "奈良線": {
+    "color": "#a52a2a",
+    "en": "奈良線",
+    "source": "manual"
+  },
+  "嵯峨野線": {
+    "color": "#8b4513",
+    "en": "嵯峨野線",
+    "source": "manual"
+  },
+  "山陰本線": {
+    "color": "#8b4513",
+    "en": "山陰本線",
+    "source": "manual"
+  },
+  "山陰線": {
+    "color": "#8b4513",
+    "en": "山陰線",
+    "source": "manual"
+  },
+  "湖西線": {
+    "color": "#00a0e9",
+    "en": "湖西線",
+    "source": "manual"
+  },
+  "山陽新幹線": {
+    "color": "#0072bc",
+    "en": "山陽新幹線",
+    "source": "manual"
+  },
+  "山陽線": {
+    "color": "#0072bc",
+    "en": "山陽線",
+    "source": "manual"
+  },
+  "福知山線": {
+    "color": "#ffd400",
+    "en": "福知山線",
+    "source": "manual"
+  },
+  "片町線": {
+    "color": "#ff69b4",
+    "en": "片町線",
+    "source": "manual"
+  },
+  "桜島線": {
+    "color": "#e60012",
+    "en": "桜島線",
+    "source": "manual"
+  },
+  "おおさか東線": {
+    "color": "#9acd32",
+    "en": "おおさか東線",
+    "source": "manual"
+  },
+  "東海道新幹線": {
+    "color": "#0072bc",
+    "en": "東海道新幹線",
+    "source": "manual"
+  },
+  "東北新幹線": {
+    "color": "#00b261",
+    "en": "東北新幹線",
+    "source": "manual"
+  },
+  "京阪本線": {
+    "color": "#008000",
+    "en": "京阪本線",
+    "source": "manual"
+  },
+  "京阪鴨東線": {
+    "color": "#008000",
+    "en": "京阪鴨東線",
+    "source": "manual"
+  },
+  "鴨東線": {
+    "color": "#008000",
+    "en": "鴨東線",
+    "source": "manual"
+  },
+  "京阪中之島線": {
+    "color": "#008000",
+    "en": "京阪中之島線",
+    "source": "manual"
+  },
+  "中之島線": {
+    "color": "#008000",
+    "en": "中之島線",
+    "source": "manual"
+  },
+  "京阪宇治線": {
+    "color": "#008000",
+    "en": "京阪宇治線",
+    "source": "manual"
+  },
+  "宇治線": {
+    "color": "#008000",
+    "en": "宇治線",
+    "source": "manual"
+  },
+  "京阪交野線": {
+    "color": "#008000",
+    "en": "京阪交野線",
+    "source": "manual"
+  },
+  "交野線": {
+    "color": "#008000",
+    "en": "交野線",
+    "source": "manual"
+  },
+  "京阪京津線": {
+    "color": "#008000",
+    "en": "京阪京津線",
+    "source": "manual"
+  },
+  "京津線": {
+    "color": "#008000",
+    "en": "京津線",
+    "source": "manual"
+  },
+  "京阪石山坂本線": {
+    "color": "#008000",
+    "en": "京阪石山坂本線",
+    "source": "manual"
+  },
+  "石山坂本線": {
+    "color": "#008000",
+    "en": "石山坂本線",
+    "source": "manual"
+  },
+  "近鉄京都線": {
+    "color": "#e60012",
+    "en": "近鉄京都線",
+    "source": "manual"
+  },
+  "近鉄奈良線": {
+    "color": "#e60012",
+    "en": "近鉄奈良線",
+    "source": "manual"
+  },
+  "近鉄大阪線": {
+    "color": "#e60012",
+    "en": "近鉄大阪線",
+    "source": "manual"
+  },
+  "大阪線": {
+    "color": "#e60012",
+    "en": "大阪線",
+    "source": "manual"
+  },
+  "近鉄南大阪線": {
+    "color": "#e60012",
+    "en": "近鉄南大阪線",
+    "source": "manual"
+  },
+  "南大阪線": {
+    "color": "#e60012",
+    "en": "南大阪線",
+    "source": "manual"
+  },
+  "近鉄難波線": {
+    "color": "#e60012",
+    "en": "近鉄難波線",
+    "source": "manual"
+  },
+  "難波線": {
+    "color": "#e60012",
+    "en": "難波線",
+    "source": "manual"
+  },
+  "橿原線": {
+    "color": "#e60012",
+    "en": "橿原線",
+    "source": "manual"
+  },
+  "天理線": {
+    "color": "#e60012",
+    "en": "天理線",
+    "source": "manual"
+  },
+  "生駒線": {
+    "color": "#e60012",
+    "en": "生駒線",
+    "source": "manual"
+  },
+  "けいはんな線": {
+    "color": "#e60012",
+    "en": "けいはんな線",
+    "source": "manual"
+  },
+  "京都市営地下鉄烏丸線": {
+    "color": "#31a354",
+    "en": "京都市営地下鉄烏丸線",
+    "source": "manual"
+  },
+  "烏丸線": {
+    "color": "#31a354",
+    "en": "烏丸線",
+    "source": "manual"
+  },
+  "京都市営地下鉄東西線": {
+    "color": "#e85298",
+    "en": "京都市営地下鉄東西線",
+    "source": "manual"
+  },
+  "西神線": {
+    "color": "#008000",
+    "en": "西神線",
+    "source": "manual"
+  },
+  "西神延伸線": {
+    "color": "#008000",
+    "en": "西神延伸線",
+    "source": "manual"
+  },
+  "海岸線": {
+    "color": "#0078ba",
+    "en": "海岸線",
+    "source": "manual"
+  },
+  "北神線": {
+    "color": "#008000",
+    "en": "北神線",
+    "source": "manual"
+  },
+  "阪神本線": {
+    "color": "#f15a22",
+    "en": "阪神本線",
+    "source": "manual"
+  },
+  "阪神なんば線": {
+    "color": "#f15a22",
+    "en": "阪神なんば線",
+    "source": "manual"
+  },
+  "武庫川線": {
+    "color": "#f15a22",
+    "en": "武庫川線",
+    "source": "manual"
+  },
+  "南海本線": {
+    "color": "#0072bc",
+    "en": "南海本線",
+    "source": "manual"
+  },
+  "南海高野線": {
+    "color": "#0072bc",
+    "en": "南海高野線",
+    "source": "manual"
+  },
+  "高野線": {
+    "color": "#0072bc",
+    "en": "高野線",
+    "source": "manual"
+  },
+  "泉北高速鉄道線": {
+    "color": "#0072bc",
+    "en": "泉北高速鉄道線",
+    "source": "manual"
+  },
+  "叡山本線": {
+    "color": "#008000",
+    "en": "叡山本線",
+    "source": "manual"
+  },
+  "鞍馬線": {
+    "color": "#008000",
+    "en": "鞍馬線",
+    "source": "manual"
+  },
+  "嵐山本線": {
+    "color": "#800080",
+    "en": "嵐山本線",
+    "source": "manual"
+  },
+  "北野線": {
+    "color": "#800080",
+    "en": "北野線",
+    "source": "manual"
+  },
+  "大阪モノレール線": {
+    "color": "#00a0e9",
+    "en": "大阪モノレール線",
+    "source": "manual"
+  },
+  "多摩都市モノレール線": {
+    "color": "#f39800",
+    "en": "多摩都市モノレール線",
+    "source": "manual"
+  },
+  "多摩モノレール": {
+    "color": "#f39800",
+    "en": "多摩モノレール",
+    "source": "manual"
+  },
+  "ポートアイランド線": {
+    "color": "#00b2b2",
+    "en": "ポートアイランド線",
+    "source": "manual"
+  },
+  "六甲アイランド線": {
+    "color": "#00b2b2",
+    "en": "六甲アイランド線",
+    "source": "manual"
+  },
+  "阪堺線": {
+    "color": "#008000",
+    "en": "阪堺線",
+    "source": "manual"
+  },
+  "上町線": {
+    "color": "#008000",
+    "en": "上町線",
+    "source": "manual"
+  },
+  "妙見線": {
+    "color": "#f15a22",
+    "en": "妙見線",
+    "source": "manual"
+  },
+  "日生線": {
+    "color": "#f15a22",
+    "en": "日生線",
+    "source": "manual"
+  },
+  "有馬線": {
+    "color": "#f15a22",
+    "en": "有馬線",
+    "source": "manual"
+  },
+  "粟生線": {
+    "color": "#f15a22",
+    "en": "粟生線",
+    "source": "manual"
+  },
+  "流山線": {
+    "color": "#00a650",
+    "en": "流山線",
+    "source": "manual"
+  },
+  "荒川線": {
+    "color": "#ffc20e",
+    "en": "荒川線",
+    "source": "manual"
+  },
+  "ディズニーリゾートライン": {
+    "color": "#e7348e",
+    "en": "ディズニーリゾートライン",
+    "source": "manual"
+  },
+  "上野懸垂線": {
+    "color": "#228b22",
+    "en": "上野懸垂線",
+    "source": "manual"
+  },
+  "transfer": {
+    "color": "#999999",
+    "en": "transfer",
+    "source": "manual"
+  }
+}
