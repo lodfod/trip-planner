@@ -28,6 +28,8 @@ import {
   ArrowLeftRight,
   ChevronDown,
   ChevronRight,
+  Pencil,
+  Users,
 } from "lucide-react";
 import { ItineraryWithDetails, GroupMember, Stop } from "../../lib/types";
 import { StopCard } from "./StopCard";
@@ -70,9 +72,12 @@ export function ItineraryDetail({
   const { toast } = useToast();
 
   const isCreator = itinerary.created_by === currentUserId;
-  const currentStatus = itinerary.participants.find(
+  const currentParticipant = itinerary.participants.find(
     (p) => p.user_id === currentUserId
-  )?.status;
+  );
+  const currentStatus = currentParticipant?.status;
+  // User can edit if they are the creator OR if they have can_edit permission
+  const canEdit = isCreator || (currentParticipant?.can_edit ?? false);
 
   const goingParticipants = itinerary.participants.filter(
     (p) => p.status === "going"
@@ -117,6 +122,34 @@ export function ItineraryDetail({
       toast({
         title: "Error",
         description: "Failed to remove stop",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Toggle edit permission for a participant
+  const handleToggleCanEdit = async (participantId: string, canEdit: boolean) => {
+    try {
+      const { error } = await supabase
+        .from("itinerary_participants")
+        .update({ can_edit: canEdit })
+        .eq("id", participantId);
+
+      if (error) throw error;
+
+      toast({
+        title: canEdit ? "Editor added" : "Editor removed",
+        description: canEdit
+          ? "This person can now edit the itinerary"
+          : "This person can no longer edit the itinerary",
+      });
+
+      onUpdate();
+    } catch (error) {
+      console.error("Error toggling edit permission:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update permissions",
         variant: "destructive",
       });
     }
@@ -315,8 +348,14 @@ export function ItineraryDetail({
                     {goingParticipants.slice(0, 5).map((p) => (
                       <Avatar
                         key={p.id}
-                        className="h-6 w-6 border-2 border-background"
-                        title={p.profile?.display_name || p.profile?.full_name}
+                        className={cn(
+                          "h-6 w-6 border-2 border-background",
+                          p.can_edit && "ring-2 ring-blue-500"
+                        )}
+                        title={
+                          (p.profile?.display_name || p.profile?.full_name || "?") +
+                          (p.can_edit ? " (Editor)" : "")
+                        }
                       >
                         <AvatarImage src={p.profile?.avatar_url} />
                         <AvatarFallback className="text-xs bg-green-100">
@@ -343,8 +382,14 @@ export function ItineraryDetail({
                     {maybeParticipants.slice(0, 3).map((p) => (
                       <Avatar
                         key={p.id}
-                        className="h-6 w-6 border-2 border-background"
-                        title={p.profile?.display_name || p.profile?.full_name}
+                        className={cn(
+                          "h-6 w-6 border-2 border-background",
+                          p.can_edit && "ring-2 ring-blue-500"
+                        )}
+                        title={
+                          (p.profile?.display_name || p.profile?.full_name || "?") +
+                          (p.can_edit ? " (Editor)" : "")
+                        }
                       >
                         <AvatarImage src={p.profile?.avatar_url} />
                         <AvatarFallback className="text-xs bg-yellow-100">
@@ -359,6 +404,52 @@ export function ItineraryDetail({
                   </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Collaborator Management - Only visible to creator */}
+          {isCreator && itinerary.participants.length > 0 && (
+            <div className="mt-3 pt-3 border-t text-left">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <span className="text-xs font-medium">Manage Editors</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {itinerary.participants
+                  .filter((p) => p.user_id !== currentUserId) // Don't show self
+                  .map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => handleToggleCanEdit(p.id, !p.can_edit)}
+                      className={cn(
+                        "flex items-center gap-1.5 px-2 py-1 rounded-full text-xs transition-colors",
+                        p.can_edit
+                          ? "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                          : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      )}
+                    >
+                      <Avatar className="h-4 w-4">
+                        <AvatarImage src={p.profile?.avatar_url} />
+                        <AvatarFallback className="text-[8px]">
+                          {getInitials(
+                            p.profile?.display_name || p.profile?.full_name || "?"
+                          )}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span>
+                        {p.profile?.display_name || p.profile?.full_name}
+                      </span>
+                      {p.can_edit ? (
+                        <Pencil className="h-3 w-3" />
+                      ) : (
+                        <Plus className="h-3 w-3" />
+                      )}
+                    </button>
+                  ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Tap to toggle edit permissions. Editors can add and remove stops.
+              </p>
             </div>
           )}
         </CardContent>
@@ -385,7 +476,7 @@ export function ItineraryDetail({
             Stops ({itinerary.stops.length})
           </h3>
           <div className="flex gap-2">
-            {itinerary.stops.length >= 2 && isGoogleMapsConfigured() && (
+            {itinerary.stops.length >= 2 && isGoogleMapsConfigured() && canEdit && (
               <Button
                 variant="outline"
                 size="sm"
@@ -396,7 +487,7 @@ export function ItineraryDetail({
                 <span className="hidden sm:inline">{isOptimizing ? "Optimizing..." : "Optimize Route"}</span>
               </Button>
             )}
-            {isCreator && (
+            {canEdit && (
               <Button size="sm" onClick={() => setIsAddStopOpen(true)}>
                 <Plus className="h-4 w-4 sm:mr-1" />
                 <span className="hidden sm:inline">Add Stop</span>
@@ -412,7 +503,7 @@ export function ItineraryDetail({
               <p className="text-muted-foreground">
                 No stops added yet. Add stops to plan your day!
               </p>
-              {isCreator && (
+              {canEdit && (
                 <Button
                   className="mt-4"
                   onClick={() => setIsAddStopOpen(true)}
@@ -439,7 +530,7 @@ export function ItineraryDetail({
                     departureTime={itineraryStop.planned_departure_time}
                     notes={itineraryStop.notes}
                     isOptional={itineraryStop.is_optional}
-                    canEdit={isCreator}
+                    canEdit={canEdit}
                     onRemove={() => handleRemoveStop(itineraryStop.id)}
                   />
 

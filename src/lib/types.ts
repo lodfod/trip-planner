@@ -188,6 +188,7 @@ export interface ItineraryParticipant {
   itinerary_id: string;
   user_id: string;
   status: ParticipationStatus;
+  can_edit: boolean; // Whether this participant can add/remove/reorder stops
   profile?: {
     full_name: string;
     display_name?: string;

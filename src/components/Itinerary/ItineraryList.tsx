@@ -65,6 +65,7 @@ export function ItineraryList({
             id,
             user_id,
             status,
+            can_edit,
             profile:profiles!itinerary_participants_user_id_fkey (
               full_name,
               display_name,
