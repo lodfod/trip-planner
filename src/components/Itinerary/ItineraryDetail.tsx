@@ -1,4 +1,19 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -31,8 +46,9 @@ import {
   Pencil,
   Users,
 } from "lucide-react";
-import { ItineraryWithDetails, GroupMember, Stop } from "../../lib/types";
+import { ItineraryWithDetails, GroupMember, Stop, ItineraryStopWithDetails } from "../../lib/types";
 import { StopCard } from "./StopCard";
+import { SortableStopCard } from "./SortableStopCard";
 import { AddStopDialog } from "./AddStopDialog";
 import { RouteMap, RouteStepDisplay } from "./RouteMap";
 import { cn } from "../../lib/utils";
@@ -78,6 +94,64 @@ export function ItineraryDetail({
   const currentStatus = currentParticipant?.status;
   // User can edit if they are the creator OR if they have can_edit permission
   const canEdit = isCreator || (currentParticipant?.can_edit ?? false);
+
+  // Drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Require 8px drag before activating
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handle drag end - reorder stops and update database
+  const handleDragEnd = useCallback(async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = itinerary.stops.findIndex((s) => s.id === active.id);
+    const newIndex = itinerary.stops.findIndex((s) => s.id === over.id);
+
+    if (oldIndex === -1 || newIndex === -1) {
+      return;
+    }
+
+    // Optimistically update UI order
+    const reorderedStops = arrayMove(itinerary.stops, oldIndex, newIndex);
+
+    try {
+      // Update all stop orders in the database
+      const updatePromises = reorderedStops.map((stop, index) =>
+        supabase
+          .from("itinerary_stops")
+          .update({ stop_order: index })
+          .eq("id", stop.id)
+      );
+
+      await Promise.all(updatePromises);
+
+      toast({
+        title: "Stops reordered",
+        description: "Route will recalculate automatically",
+      });
+
+      // Refresh to get new route
+      onUpdate();
+    } catch (error) {
+      console.error("Error reordering stops:", error);
+      toast({
+        title: "Error",
+        description: "Failed to reorder stops",
+        variant: "destructive",
+      });
+    }
+  }, [itinerary.stops, toast, onUpdate]);
 
   const goingParticipants = itinerary.participants.filter(
     (p) => p.status === "going"
@@ -274,6 +348,11 @@ export function ItineraryDetail({
             style={{ backgroundColor: itinerary.color }}
           />
           {itinerary.name}
+          {canEdit && !isCreator && (
+            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+              Editor
+            </span>
+          )}
         </h2>
         <p className="text-sm text-muted-foreground mt-1">
           {format(new Date(itinerary.date), "EEEE, MMMM d, yyyy")}
@@ -515,24 +594,34 @@ export function ItineraryDetail({
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-2">
-            {itinerary.stops.map((itineraryStop, index) => {
-              // Get route steps for this leg (from current stop to next stop)
-              const legSteps = routeSteps.filter(step => step.legIndex === index);
-              const hasNextStop = index < itinerary.stops.length - 1;
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={itinerary.stops.map((s) => s.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="space-y-2">
+                {itinerary.stops.map((itineraryStop, index) => {
+                  // Get route steps for this leg (from current stop to next stop)
+                  const legSteps = routeSteps.filter(step => step.legIndex === index);
+                  const hasNextStop = index < itinerary.stops.length - 1;
 
-              return (
-                <div key={itineraryStop.id}>
-                  <StopCard
-                    stop={itineraryStop.stop}
-                    order={index + 1}
-                    arrivalTime={itineraryStop.planned_arrival_time}
-                    departureTime={itineraryStop.planned_departure_time}
-                    notes={itineraryStop.notes}
-                    isOptional={itineraryStop.is_optional}
-                    canEdit={canEdit}
-                    onRemove={() => handleRemoveStop(itineraryStop.id)}
-                  />
+                  return (
+                    <div key={itineraryStop.id}>
+                      <SortableStopCard
+                        id={itineraryStop.id}
+                        stop={itineraryStop.stop}
+                        order={index + 1}
+                        arrivalTime={itineraryStop.planned_arrival_time}
+                        departureTime={itineraryStop.planned_departure_time}
+                        notes={itineraryStop.notes}
+                        isOptional={itineraryStop.is_optional}
+                        canEdit={canEdit}
+                        onRemove={() => handleRemoveStop(itineraryStop.id)}
+                      />
 
                   {/* Directions to next stop - shown between cards */}
                   {hasNextStop && legSteps.length > 0 && (() => {
@@ -661,10 +750,12 @@ export function ItineraryDetail({
                       </Collapsible>
                     );
                   })()}
-                </div>
-              );
-            })}
-          </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 

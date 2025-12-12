@@ -15,6 +15,7 @@ import {
   Star,
   Globe,
   Phone,
+  GripVertical,
 } from "lucide-react";
 import { Stop, StopCategory } from "../../lib/types";
 import { cn } from "../../lib/utils";
@@ -30,6 +31,8 @@ interface StopCardProps {
   onRemove?: () => void;
   sharedWith?: string[]; // Names of other itineraries that share this stop
   showMap?: boolean; // Show mini map preview
+  dragHandleProps?: React.HTMLAttributes<HTMLButtonElement>; // For drag-and-drop
+  isDragging?: boolean;
 }
 
 // Get static map URL for a location
@@ -69,6 +72,8 @@ export function StopCard({
   onRemove,
   sharedWith,
   showMap = true,
+  dragHandleProps,
+  isDragging,
 }: StopCardProps) {
   const categoryConfig = CATEGORY_CONFIG[stop.category] || CATEGORY_CONFIG.other;
 
@@ -99,10 +104,25 @@ export function StopCard({
   };
 
   return (
-    <Card className={cn("relative overflow-hidden", isOptional && "opacity-70 border-dashed")}>
+    <Card className={cn(
+      "relative overflow-hidden transition-shadow",
+      isOptional && "opacity-70 border-dashed",
+      isDragging && "shadow-lg ring-2 ring-primary/20"
+    )}>
       <CardContent className="py-4 px-3 sm:px-6">
-        {/* Title row: Number + Name + Actions */}
+        {/* Title row: Drag Handle + Number + Name + Actions */}
         <div className="flex items-center gap-2 sm:gap-3 mb-2">
+          {/* Drag handle - only show if canEdit */}
+          {canEdit && dragHandleProps && (
+            <button
+              {...dragHandleProps}
+              className="flex-shrink-0 p-1 -ml-1 cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+              title="Drag to reorder"
+            >
+              <GripVertical className="h-5 w-5" />
+            </button>
+          )}
+
           {/* Order number / Category icon */}
           <div
             className={cn(
