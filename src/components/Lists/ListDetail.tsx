@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   ArrowLeft,
@@ -11,6 +12,9 @@ import {
   Target,
   Landmark,
   FileText,
+  Pencil,
+  Check,
+  X,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -62,7 +66,48 @@ export function ListDetail({
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [addingToParent, setAddingToParent] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isEditingList, setIsEditingList] = useState(false);
+  const [editListName, setEditListName] = useState(list.name);
+  const [editListDescription, setEditListDescription] = useState(list.description || "");
   const { toast } = useToast();
+
+  // Handle editing list name/description
+  const handleSaveListEdit = async () => {
+    if (!editListName.trim()) return;
+
+    try {
+      const { error } = await supabase
+        .from("lists")
+        .update({
+          name: editListName.trim(),
+          description: editListDescription.trim() || null,
+        })
+        .eq("id", list.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "List updated",
+        description: "List name has been updated",
+      });
+
+      setIsEditingList(false);
+      onUpdate();
+    } catch (error) {
+      console.error("Error updating list:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update list",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCancelListEdit = () => {
+    setEditListName(list.name);
+    setEditListDescription(list.description || "");
+    setIsEditingList(false);
+  };
 
   const items = list.items || [];
 
@@ -116,6 +161,32 @@ export function ListDetail({
     }
   };
 
+  // Handle editing an item
+  const handleEditItem = async (itemId: string, name: string, notes: string | null) => {
+    try {
+      const { error } = await supabase
+        .from("list_items")
+        .update({ name, notes })
+        .eq("id", itemId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Item updated",
+        description: "The item has been updated",
+      });
+
+      onUpdate();
+    } catch (error) {
+      console.error("Error editing item:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update item",
+        variant: "destructive",
+      });
+    }
+  };
+
   // Open add dialog for adding option to parent
   const handleAddOption = (parentId: string) => {
     setAddingToParent(parentId);
@@ -140,41 +211,83 @@ export function ListDetail({
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <div
-              className="p-1.5 rounded"
-              style={{ backgroundColor: `${list.color}20` }}
-            >
-              <div style={{ color: list.color }}>
-                {CATEGORY_ICONS[list.category as ListCategory] ||
-                  CATEGORY_ICONS.custom}
+          {isEditingList ? (
+            <div className="space-y-2">
+              <Input
+                value={editListName}
+                onChange={(e) => setEditListName(e.target.value)}
+                placeholder="List name"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSaveListEdit();
+                  if (e.key === "Escape") handleCancelListEdit();
+                }}
+              />
+              <Input
+                value={editListDescription}
+                onChange={(e) => setEditListDescription(e.target.value)}
+                placeholder="Description (optional)"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSaveListEdit();
+                  if (e.key === "Escape") handleCancelListEdit();
+                }}
+              />
+              <div className="flex gap-1">
+                <Button size="sm" onClick={handleSaveListEdit}>
+                  <Check className="h-3 w-3 mr-1" />
+                  Save
+                </Button>
+                <Button size="sm" variant="ghost" onClick={handleCancelListEdit}>
+                  <X className="h-3 w-3 mr-1" />
+                  Cancel
+                </Button>
               </div>
             </div>
-            <h2 className="text-xl font-bold">{list.name}</h2>
-          </div>
-          {list.description && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {list.description}
-            </p>
+          ) : (
+            <>
+              <div className="flex items-center gap-2">
+                <div
+                  className="p-1.5 rounded"
+                  style={{ backgroundColor: `${list.color}20` }}
+                >
+                  <div style={{ color: list.color }}>
+                    {CATEGORY_ICONS[list.category as ListCategory] ||
+                      CATEGORY_ICONS.custom}
+                  </div>
+                </div>
+                <h2 className="text-xl font-bold">{list.name}</h2>
+              </div>
+              {list.description && (
+                <p className="text-sm text-muted-foreground mt-1">
+                  {list.description}
+                </p>
+              )}
+            </>
           )}
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoreVertical className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              className="text-destructive focus:text-destructive"
-              onClick={() => setShowDeleteConfirm(true)}
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete List
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!isEditingList && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <MoreVertical className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setIsEditingList(true)}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Rename List
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onClick={() => setShowDeleteConfirm(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete List
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
       {/* Progress bar */}
@@ -221,6 +334,7 @@ export function ListDetail({
                   onToggleCheck={handleToggleCheck}
                   onDelete={handleDeleteItem}
                   onAddOption={handleAddOption}
+                  onEdit={handleEditItem}
                   currentUserId={currentUserId}
                 />
               ))}

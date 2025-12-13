@@ -72,10 +72,10 @@ CREATE POLICY "lists_update_creator" ON lists
   USING (auth.uid() = created_by)
   WITH CHECK (auth.uid() = created_by);
 
--- Lists: Creator can delete
-CREATE POLICY "lists_delete_creator" ON lists
+-- Lists: Any authenticated user can delete (shared trip)
+CREATE POLICY "lists_delete_authenticated" ON lists
   FOR DELETE TO authenticated
-  USING (auth.uid() = created_by);
+  USING (true);
 
 -- List Items: All authenticated users can view
 CREATE POLICY "list_items_select_authenticated" ON list_items
@@ -92,10 +92,10 @@ CREATE POLICY "list_items_update" ON list_items
   USING (true)
   WITH CHECK (true);
 
--- List Items: Creator can delete
-CREATE POLICY "list_items_delete_creator" ON list_items
+-- List Items: Any authenticated user can delete (shared trip)
+CREATE POLICY "list_items_delete_authenticated" ON list_items
   FOR DELETE TO authenticated
-  USING (auth.uid() = created_by);
+  USING (true);
 
 -- ============================================
 -- UPDATED_AT TRIGGER

@@ -117,9 +117,31 @@ export function ListsTab({ currentUserId, groupMembers }: ListsTabProps) {
   // Handle list deletion
   const handleDeleteList = async (listId: string) => {
     try {
-      const { error } = await supabase.from("lists").delete().eq("id", listId);
+      // First delete all items in the list
+      await supabase
+        .from("list_items")
+        .delete()
+        .eq("list_id", listId);
+
+      // Then delete the list itself
+      const { error, count } = await supabase
+        .from("lists")
+        .delete()
+        .eq("id", listId)
+        .select();
 
       if (error) throw error;
+
+      // Check if anything was actually deleted
+      const { data: checkList } = await supabase
+        .from("lists")
+        .select("id")
+        .eq("id", listId)
+        .single();
+
+      if (checkList) {
+        throw new Error("Delete was blocked by RLS policy. Check Supabase permissions.");
+      }
 
       selectedListIdRef.current = null;
       setSelectedList(null);
@@ -133,7 +155,7 @@ export function ListsTab({ currentUserId, groupMembers }: ListsTabProps) {
       console.error("Error deleting list:", error);
       toast({
         title: "Error",
-        description: "Failed to delete list",
+        description: `Failed to delete list: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }
