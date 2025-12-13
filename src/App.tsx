@@ -11,6 +11,7 @@ import AllExpensesParent from "./components/AllExpenses/AllExpensesParent";
 import { Toaster } from "./components/ui/toaster";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { ItineraryList } from "./components/Itinerary";
+import { ListsTab } from "./components/Lists";
 
 export const SessionContext = createContext<Session | null>(null);
 
@@ -131,9 +132,10 @@ function App() {
 
             <div className="container mx-auto px-4 py-6">
               <Tabs defaultValue="expenses" className="w-full">
-                <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
+                <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 mb-6">
                   <TabsTrigger value="expenses">Expenses</TabsTrigger>
                   <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
+                  <TabsTrigger value="lists">Lists</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="expenses" className="space-y-6">
@@ -150,6 +152,13 @@ function App() {
 
                 <TabsContent value="itinerary">
                   <ItineraryList
+                    currentUserId={session.user.id}
+                    groupMembers={groupMembers}
+                  />
+                </TabsContent>
+
+                <TabsContent value="lists">
+                  <ListsTab
                     currentUserId={session.user.id}
                     groupMembers={groupMembers}
                   />

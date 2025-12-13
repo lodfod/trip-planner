@@ -295,3 +295,55 @@ export interface ItemAssignment {
   itemIndex: number;
   userIds: string[];
 }
+
+// ============================================
+// LISTS TYPES (Place Collections)
+// ============================================
+
+export type ListCategory = 'restaurants' | 'shopping' | 'activities' | 'sightseeing' | 'custom';
+
+export interface List {
+  id: string;
+  name: string;
+  description?: string;
+  category: ListCategory;
+  color: string;
+  created_by: string;
+  created_at: string;
+  updated_at?: string;
+  creator_profile?: {
+    full_name: string;
+    display_name?: string;
+  };
+  items?: ListItem[];
+}
+
+export interface ListItem {
+  id: string;
+  list_id: string;
+  parent_item_id?: string;
+  name: string;
+  notes?: string;
+  item_order: number;
+  is_checked: boolean;
+  checked_by?: string;
+  checked_at?: string;
+  // Google Maps place data (null if just text)
+  is_place: boolean;
+  google_place_id?: string;
+  address?: string;
+  lat?: number;
+  lng?: number;
+  photo_url?: string;
+  rating?: number;
+  price_level?: number;
+  // Metadata
+  created_by: string;
+  created_at: string;
+  // Nested items (populated when fetched)
+  children?: ListItem[];
+  checked_profile?: {
+    full_name: string;
+    display_name?: string;
+  };
+}
